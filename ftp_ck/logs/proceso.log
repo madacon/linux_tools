@@ -1,124 +1,22 @@
 + CHECK_FILE
 + [ -f test.txt ]
-+ ESTADO=1
-+ echo 1
-1
++ zabbix_sender -z 192.168.0.8 -s REPORTE -k application.status -o CREADO
+info from server: "processed: 1; failed: 0; total: 1; seconds spent: 0.000100"
+sent: 1; skipped: 0; total: 1
 + SEND_SFTP
 + echo =======================================================
 =======================================================
 + cksum test.txt
-cksum: test.txt: No such file or directory
-+ CK_LOCAL_FILE=
-+ sshpass -v -p Global2021 sftp ftpuser@192.168.0.59
++ CK_LOCAL_FILE=2075669242 1811 test.txt
++ sshpass -v -p Global2022 sftp ftpuser@192.168.0.8
 SSHPASS searching for password prompt using match "assword"
-SSHPASS read: ftpuser@192.168.0.59's password: 
+SSHPASS read: ftpuser@192.168.0.8's password: 
 SSHPASS detected prompt. Sending password.
 SSHPASS read: 
 
-Connected to 192.168.0.59.
-sftp> 	cd ftp/Reporte
-sftp> 	pwd
-Remote working directory: /home/ftpuser/ftp/Reporte
-sftp> 	put ./test.txt
-stat ./test.txt: No such file or directory
-sftp> 	bye > ./logs/proceso.log
-+ [ 0 -eq 0 ]
-+ echo Enviado a las 12/05/2022 10:59:23
-Enviado a las 12/05/2022 10:59:23
-+ REMOTE_CHECK
-+ echo =======================================================
-=======================================================
-+ cksum test.txt
-cksum: test.txt: No such file or directory
-+ CK_REMOTE_FILE=
-+ sshpass -p Global2021 sftp -v ftpuser@192.168.0.59
-OpenSSH_8.2p1 Ubuntu-4ubuntu0.4, OpenSSL 1.1.1f  31 Mar 2020
-debug1: Reading configuration data /etc/ssh/ssh_config
-debug1: /etc/ssh/ssh_config line 19: include /etc/ssh/ssh_config.d/*.conf matched no files
-debug1: /etc/ssh/ssh_config line 21: Applying options for *
-debug1: Connecting to 192.168.0.59 [192.168.0.59] port 22.
-debug1: Connection established.
-debug1: identity file /home/dam/.ssh/id_rsa type -1
-debug1: identity file /home/dam/.ssh/id_rsa-cert type -1
-debug1: identity file /home/dam/.ssh/id_dsa type -1
-debug1: identity file /home/dam/.ssh/id_dsa-cert type -1
-debug1: identity file /home/dam/.ssh/id_ecdsa type -1
-debug1: identity file /home/dam/.ssh/id_ecdsa-cert type -1
-debug1: identity file /home/dam/.ssh/id_ecdsa_sk type -1
-debug1: identity file /home/dam/.ssh/id_ecdsa_sk-cert type -1
-debug1: identity file /home/dam/.ssh/id_ed25519 type -1
-debug1: identity file /home/dam/.ssh/id_ed25519-cert type -1
-debug1: identity file /home/dam/.ssh/id_ed25519_sk type -1
-debug1: identity file /home/dam/.ssh/id_ed25519_sk-cert type -1
-debug1: identity file /home/dam/.ssh/id_xmss type -1
-debug1: identity file /home/dam/.ssh/id_xmss-cert type -1
-debug1: Local version string SSH-2.0-OpenSSH_8.2p1 Ubuntu-4ubuntu0.4
-debug1: Remote protocol version 2.0, remote software version OpenSSH_8.2p1 Ubuntu-4ubuntu0.5
-debug1: match: OpenSSH_8.2p1 Ubuntu-4ubuntu0.5 pat OpenSSH* compat 0x04000000
-debug1: Authenticating to 192.168.0.59:22 as 'ftpuser'
-debug1: SSH2_MSG_KEXINIT sent
-debug1: SSH2_MSG_KEXINIT received
-debug1: kex: algorithm: curve25519-sha256
-debug1: kex: host key algorithm: ecdsa-sha2-nistp256
-debug1: kex: server->client cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
-debug1: kex: client->server cipher: chacha20-poly1305@openssh.com MAC: <implicit> compression: none
-debug1: expecting SSH2_MSG_KEX_ECDH_REPLY
-debug1: Server host key: ecdsa-sha2-nistp256 SHA256:VXaemc41eGyGc7mkTibNoELbuM7HJOpVoOS/siFJ8ek
-debug1: Host '192.168.0.59' is known and matches the ECDSA host key.
-debug1: Found key in /home/dam/.ssh/known_hosts:2
-debug1: rekey out after 134217728 blocks
-debug1: SSH2_MSG_NEWKEYS sent
-debug1: expecting SSH2_MSG_NEWKEYS
-debug1: SSH2_MSG_NEWKEYS received
-debug1: rekey in after 134217728 blocks
-debug1: Will attempt key: /home/dam/.ssh/id_rsa 
-debug1: Will attempt key: /home/dam/.ssh/id_dsa 
-debug1: Will attempt key: /home/dam/.ssh/id_ecdsa 
-debug1: Will attempt key: /home/dam/.ssh/id_ecdsa_sk 
-debug1: Will attempt key: /home/dam/.ssh/id_ed25519 
-debug1: Will attempt key: /home/dam/.ssh/id_ed25519_sk 
-debug1: Will attempt key: /home/dam/.ssh/id_xmss 
-debug1: SSH2_MSG_EXT_INFO received
-debug1: kex_input_ext_info: server-sig-algs=<ssh-ed25519,sk-ssh-ed25519@openssh.com,ssh-rsa,rsa-sha2-256,rsa-sha2-512,ssh-dss,ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,ecdsa-sha2-nistp521,sk-ecdsa-sha2-nistp256@openssh.com>
-debug1: SSH2_MSG_SERVICE_ACCEPT received
-debug1: Authentications that can continue: publickey,password
-debug1: Next authentication method: publickey
-debug1: Trying private key: /home/dam/.ssh/id_rsa
-debug1: Trying private key: /home/dam/.ssh/id_dsa
-debug1: Trying private key: /home/dam/.ssh/id_ecdsa
-debug1: Trying private key: /home/dam/.ssh/id_ecdsa_sk
-debug1: Trying private key: /home/dam/.ssh/id_ed25519
-debug1: Trying private key: /home/dam/.ssh/id_ed25519_sk
-debug1: Trying private key: /home/dam/.ssh/id_xmss
-debug1: Next authentication method: password
-debug1: Authentication succeeded (password).
-Authenticated to 192.168.0.59 ([192.168.0.59]:22).
-debug1: channel 0: new [client-session]
-debug1: Requesting no-more-sessions@openssh.com
-debug1: Entering interactive session.
-debug1: pledge: network
-debug1: client_input_global_request: rtype hostkeys-00@openssh.com want_reply 0
-debug1: Sending environment.
-debug1: Sending env LANG = C.UTF-8
-debug1: Sending subsystem: sftp
-Connected to 192.168.0.59.
-sftp> 	cd ftp/Reporte
-sftp> 	ls test.txt
-test.txt                                
-sftp> 	bye
-debug1: client_input_channel_req: channel 0 rtype exit-status reply 0
-debug1: channel 0: free: client-session, nchannels 1
-debug1: fd 0 clearing O_NONBLOCK
-debug1: fd 2 clearing O_NONBLOCK
-Transferred: sent 2284, received 2880 bytes, in 0.5 seconds
-Bytes per second: sent 4361.8, received 5500.0
-debug1: Exit status 0
-+ echo 
-
-+ echo 
-
-+ [[  ==  ]]
-ftp_report.sh: 64: [[: not found
-+ echo EL ARCHIVO DESTINO NO ES IGUAL AL ORIGEN
-EL ARCHIVO DESTINO NO ES IGUAL AL ORIGEN
-+ exit 1
+Connection closed
+Connection closed.  
++ [ 255 -eq 0 ]
++ zabbix_sender -z 192.168.0.8 -s COPIA_REPORTE -k application.status -o NO_ENVIADO
+info from server: "processed: 1; failed: 0; total: 1; seconds spent: 0.000046"
+sent: 1; skipped: 0; total: 1

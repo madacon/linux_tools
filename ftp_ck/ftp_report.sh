@@ -3,9 +3,9 @@
 ### VARS ###
 
 USER='ftpuser'
-PASSWD='Global2021'
-#PASSWD='Global2022'
-HOST='192.168.0.59'
+#PASSWD='Global2021'
+PASSWD='Global2022'
+HOST='192.168.0.8'
 FILE='test.txt'
 DATENOW=$(date "+%d/%m/%Y %H:%M:%S")
 LOGS='./logs/proceso.log'
@@ -13,21 +13,21 @@ LOGS='./logs/proceso.log'
 #DATECREATE=$(head -2 ./logs/proceso.log | awk -F " " '{ print $9 " "  $10 }')
 CK_REMOTE_FILE=''
 CK_LOCAL_FILE=''
-ESTADO=''
+#NO_ENVIADO=$(zabbix_sender -z $HOST -s 'COPIA_REPORTE' -k application.status -o 'NO_ENVIADO')
+#ENVIADO=$(zabbix_sender -z $HOST -s 'COPIA_REPORTE' -k application.status -o 'ENVIADO')
+#CREADO=$(zabbix_sender -z $HOST -s 'REPORTE' -k application.status -o 'CREADO')
+#NO_CREADO=$(zabbix_sender -z $HOST -s 'REPORTE' -k application.status -o 'NO_CREADO')
+
+
 
 ### FUNCIONES ###
 
 CHECK_FILE(){
 	if [ -f "$FILE" ];then
-		#echo "Creado a las $DATENOW"
-		ESTADO=0
-	else
-		#echo "No se encuentra el archivo"
-
-		ESTADO=1
+		zabbix_sender -z $HOST -s 'REPORTE' -k application.status -o 'CREADO'		
+	else		
+		zabbix_sender -z $HOST -s 'REPORTE' -k application.status -o 'NO_CREADO'
 	fi
-	
-	echo "$ESTADO"
 }
 
 
@@ -36,16 +36,16 @@ SEND_SFTP(){
 	echo "======================================================="
 	CK_LOCAL_FILE=$(cksum $FILE)
 	sshpass -v -p $PASSWD sftp   $USER@$HOST<<EOF
-	cd ftp/Reporte
+	cd /home/ftpuser/Reporte
 	pwd
 	put ./$FILE
 	bye > $LOGS
 EOF
 
 if [ $? -eq 0 ];then
-	echo "Enviado a las $DATENOW"
+	zabbix_sender -z $HOST -s 'COPIA_REPORTE' -k application.status -o 'ENVIADO'
 else
-	echo "Error en copia de archivo"
+	zabbix_sender -z $HOST -s 'COPIA_REPORTE' -k application.status -o 'NO_ENVIADO'
 fi
 
 }
@@ -54,7 +54,7 @@ REMOTE_CHECK(){
 	echo "======================================================="
 	CK_REMOTE_FILE=$(cksum $FILE)
 	sshpass -p $PASSWD sftp -v $USER@$HOST<<EOF
-	cd ftp/Reporte
+	cd /home/ftpuser/Reporte
 	ls $FILE
 	bye
 EOF
@@ -71,6 +71,17 @@ EOF
 
 }
 
+#STATUS_CHECK(){
+#zabbix_sender -z 192.168.0.8 -s 'Custom Application' -k application.status -o 'vamooo'
+
+#if [ $? -eq 0 ];then
+#	ALERTA_1='$(zabbix_sender -c /etc/zabbix/zabbix_agentd.conf -s "$HOSt" -k $2 -o $1 >/dev/null 2>&1)'
+#else
+#	ALERTA_2='1'
+#fi
+
+#}
+
 
 #notify_zabbix () {
 
@@ -84,16 +95,13 @@ EOF
 
 PROCESO(){
 	CHECK_FILE
-#	notify_zabbix
 	SEND_SFTP
-#	notify_zabbix
-	REMOTE_CHECK
+#	REMOTE_CHECK
 }
 
 
 ### MAIN ###
 
-echo "$ESTADO"
 
 PROCESO > $LOGS 2>&1
 

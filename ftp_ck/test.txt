@@ -1,0 +1,29 @@
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eno1: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc fq_codel state DOWN group default qlen 1000
+    link/ether b0:7b:25:87:d4:4d brd ff:ff:ff:ff:ff:ff
+    altname enp1s0
+3: wlp0s20f3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 18:26:49:6c:85:ef brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.4/24 brd 192.168.0.255 scope global dynamic noprefixroute wlp0s20f3
+       valid_lft 2300sec preferred_lft 2300sec
+    inet6 2800:810:4c1:a4ea:48ef:dde6:a060:fe40/128 scope global dynamic noprefixroute 
+       valid_lft 2196sec preferred_lft 2196sec
+    inet6 fdaa:bbcc:ddee:0:9e14:c481:79eb:b977/64 scope global temporary dynamic 
+       valid_lft 592702sec preferred_lft 74174sec
+    inet6 fdaa:bbcc:ddee:0:7801:efe3:b207:fecb/64 scope global dynamic mngtmpaddr noprefixroute 
+       valid_lft 2006054640sec preferred_lft 2006054640sec
+    inet6 2800:810:4c1:a4ea:d6de:22c9:9ce4:42da/64 scope global temporary dynamic 
+       valid_lft 592702sec preferred_lft 74174sec
+    inet6 2800:810:4c1:a4ea:88f3:8b57:b35f:50b3/64 scope global dynamic mngtmpaddr noprefixroute 
+       valid_lft 3886503sec preferred_lft 3886503sec
+    inet6 fe80::c49b:a888:a4cb:9673/64 scope link noprefixroute 
+       valid_lft forever preferred_lft forever
+5: vpn: <POINTOPOINT,MULTICAST,NOARP,UP,LOWER_UP> mtu 1400 qdisc fq_codel state UNKNOWN group default qlen 500
+    link/none 
+    inet 10.9.4.88/32 scope global vpn
+       valid_lft forever preferred_lft forever
